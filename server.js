@@ -58,6 +58,13 @@ app.get("/scrape", function (req, res) {
     })
     res.send("scrape complete")
   })
+});
+
+app.put("/save/:id", function(req, res){
+  db.Article.update({ _id: req.params.id}, { saved: true }, { new: true })
+  .then(function(update){
+    res.send(update)
+  })
 })
 
 
