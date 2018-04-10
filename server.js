@@ -70,16 +70,13 @@ app.put("/save/:id", function(req, res){
 app.get("/saved", function(req, res){
   db.Article.find({saved: true})
   .then(function(dbArticle){
-    console.log(dbArticle);
     res.render("saved", {dbArticle: dbArticle})
   });
 });
 
 app.post("/submitNote/:id", function(req, res){
-  console.log(req.body)
   db.Note.create(req.body)
   .then(function(dbNote){
-    console.log('this is dbNote in submit ', dbNote)
     return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
     
   }).then(function(data){
@@ -94,13 +91,20 @@ app.get("/getNotes/:id", function(req, res){
   db.Article.findOne({ _id: req.params.id })
     .populate("note")
     .then(function(dbArticle) {
-      console.log("this is the db article in getNotes", dbArticle)
       res.json(dbArticle.note.body);
     })
     .catch(function(err) {
       res.json(err);
     });
-})
+});
+
+app.put("/deleteNote/:id", function(req, res){
+  db.Article.findOneAndUpdate({_id: req.params.id}, {note: undefined})
+  .then(function(response){
+    console.log(response)
+    res.json(response);
+  });
+});
 
 
 app.use(express.static("public"));

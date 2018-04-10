@@ -1,6 +1,11 @@
 
 var articleId;
 
+if ($("#modalNote").text().length >= 1){
+  console.log("in note if")
+  $("#modalSubmit").text("Update Note");
+}
+
 $("#scrape").on("click", function(){
   $.get("/scrape").then(function(response){
     location.reload();
@@ -8,7 +13,7 @@ $("#scrape").on("click", function(){
 });
 
 $(document).on("click", ".save", function(){
-  var id = $(this).attr("id");
+  let id = $(this).attr("id");
   $.ajax({
     method: "PUT",
     url: "/save/" + id
@@ -23,17 +28,29 @@ $(document).on("click", ".note", function(){
   $.get("/getNotes/" + articleId).then(function(response){
     if (response.length >= 1){
       $("#modalNote").text(response);
+      $("#modalSubmit").text("Update Note");
     }
   });
 });
 
+
 $("#modalSubmit").on("click", function(){
-  var object = {
+  let object = {
     body: $("#inputNote").val().trim()
   }
   $.post("/submitNote/" + articleId, object).then(function(response){
-    console.log(response);
-  })
-})
+    $("#modalNote").text(response);
+    $("#inputNote").val("");
+  });
+});
+
+$(document).on("click", "#noteDelete", function(){
+  $.ajax({
+    method: "PUT",
+    url: "/deleteNote/" + articleId
+  }).then(function(response){
+    $("#modalNote").text("");
+  });
+});
 
 
