@@ -95,7 +95,7 @@ app.get("/getNotes/:id", function(req, res){
     .populate("note")
     .then(function(dbArticle) {
       console.log("this is the db article in getNotes", dbArticle)
-      res.render("saved", {note1: dbArticle.note});
+      res.json(dbArticle.note.body);
     })
     .catch(function(err) {
       res.json(err);

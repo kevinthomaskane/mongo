@@ -21,7 +21,9 @@ $(document).on("click", ".save", function(){
 $(document).on("click", ".note", function(){
   articleId = $(this).attr("id");
   $.get("/getNotes/" + articleId).then(function(response){
-    console.log(response);
+    if (response.length >= 1){
+      $("#modalNote").text(response);
+    }
   });
 });
 
