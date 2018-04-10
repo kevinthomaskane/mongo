@@ -1,6 +1,3 @@
-
- 
-
 <div id="header" class="row">
   <div class="col-md-2">
     NBA Articles
@@ -24,35 +21,36 @@
 </div>
 <div class="container">
   <div class="row">
-    <ul>Articles
-      {{#each dbArticle}}
+    <ul>Articles {{#each dbArticle}}
       <li>
-        {{this.title}} 
-        <button data-toggle="modal" data-target="#myModal" class="btn btn-success note" id="{{this._id}}">Add a Note</button> <button class="btn btn-danger remove" id="{{this._id}}">Remove From Saved</button><br>
+        {{this.title}}
+        <button data-toggle="modal" data-target="#myModal" class="btn btn-success note" id="{{this._id}}">Add a Note</button>
+        <button class="btn btn-danger remove" id="{{this._id}}">Remove From Saved</button>
+        <br>
         <a href="{{this.link}}">View the article here</a>
       </li>
       {{/each}}
-      
+
     </ul>
   </div>
 </div>
 
 <div id="myModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 id="modalNote"></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <textarea id="inputNote" type="text"></textarea>
-        </div>
-        <div class="modal-footer">
-          <button type="button" id="modalSubmit" data-dismiss="modal" class="btn btn-primary">Save Note</button>
-        </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Your Notes</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5 id="modalNote"></h5>
+        <textarea id="inputNote" type="text"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="modalSubmit" data-dismiss="modal" class="btn btn-primary">Save Note</button>
       </div>
     </div>
-  </div> 
-
+  </div>
+</div>

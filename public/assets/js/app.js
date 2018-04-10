@@ -13,7 +13,7 @@ $(document).on("click", ".save", function(){
     method: "PUT",
     url: "/save/" + id
   }).then(function(data){
-    console.log(data)
+    console.log(data);
   });
 });
 
@@ -32,7 +32,7 @@ $("#modalSubmit").on("click", function(){
     body: $("#inputNote").val().trim()
   }
   $.post("/submitNote/" + articleId, object).then(function(response){
-    console.log(response)
+    console.log(response);
   })
 })
 
