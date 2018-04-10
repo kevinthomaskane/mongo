@@ -5,11 +5,16 @@ var cheerio = require("cheerio");
 var mongoose = require("mongoose");
 var request = require("request");
 var exphbs = require("express-handlebars");
+var axios = require("axios");
 
 var app = express();
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
+
 
 var PORT = 3000;
 
@@ -22,43 +27,42 @@ mongoose.connect(MONGODB_URI, {
 
 var db = require("./models");
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.get("/", function(req, res){
+  db.Article.find({})
+    .then(function(dbArticle) {
+      console.log(dbArticle)
+      res.render("index", {dbArticle: dbArticle});
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+})
+
+
+app.get("/scrape", function (req, res) {
+  var object = {};
+  axios.get("https://www.sbnation.com/nba").then(function (response) {
+
+    var $ = cheerio.load(response.data);
+
+    $(".c-entry-box--compact__title").each(function (i, element) {
+      object.title = $(this).text();
+      object.link = $(this).children("a").text();
+
+      db.Article.create(object)
+        .then(function (dbArticle) {
+        })
+        .catch(function (err) {
+          console.log(err)
+        });
+    })
+    res.send("scrape complete")
+  })
+})
+
 
 app.use(express.static("public"));
 
-app.get("/", function(req, res){
-  res.render("index", {})
-})
-
-app.get("/scrape", function(req, res){
-  axios.get("https://www.sbnation.com/nba").then(function(response){
-    
-  var $ = cheerio.load(response.data);
-  var object = {};
-
-  $(".c-entry-box--compact__title").each(function(i, element){
-    console.log("in there")
-    object.title = $(this).text();
-    object.link = $(this).children("a");
-
-    db.Article.create(object)
-        .then(function(dbArticle) {
-          // View the added result in the console
-          console.log(dbArticle);
-        })
-        .catch(function(err) {
-          // If an error occurred, send it to the client
-          return res.json(err);
-        });
-  })
-  
-  
-
-  res.render("index", object);
-
-  })
-})
-
-app.listen(PORT, function() {
+app.listen(PORT, function () {
   console.log("Server listening on: http://localhost:" + PORT);
 });
