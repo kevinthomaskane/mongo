@@ -70,9 +70,36 @@ app.put("/save/:id", function(req, res){
 app.get("/saved", function(req, res){
   db.Article.find({saved: true})
   .then(function(dbArticle){
-    console.log(dbArticle)
+    console.log(dbArticle);
     res.render("saved", {dbArticle: dbArticle})
+  });
+});
+
+app.post("/submitNote/:id", function(req, res){
+  console.log(req.body)
+  db.Note.create(req.body)
+  .then(function(dbNote){
+    console.log('this is dbNote in submit ', dbNote)
+    return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+    
+  }).then(function(data){
+    res.send("note created");
   })
+    .catch(function(error){
+    console.log(error);
+  });
+});
+
+app.get("/getNotes/:id", function(req, res){
+  db.Article.findOne({ _id: req.params.id })
+    .populate("note")
+    .then(function(dbArticle) {
+      console.log("this is the db article in getNotes", dbArticle)
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
 })
 
 

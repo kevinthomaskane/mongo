@@ -20,13 +20,16 @@ $(document).on("click", ".save", function(){
 
 $(document).on("click", ".note", function(){
   articleId = $(this).attr("id");
-})
+  $.get("/getNotes/" + articleId).then(function(response){
+    console.log(response);
+  });
+});
 
 $("#modalSubmit").on("click", function(){
   var object = {
-    note: $("#inputNote").val().trim()
+    body: $("#inputNote").val().trim()
   }
-  $.post("/note/" + articleId, object).then(function(response){
+  $.post("/submitNote/" + articleId, object).then(function(response){
     console.log(response)
   })
 })
