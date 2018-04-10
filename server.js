@@ -36,7 +36,7 @@ app.get("/", function(req, res){
     .catch(function(err) {
       res.json(err);
     });
-})
+});
 
 
 app.get("/scrape", function (req, res) {
@@ -46,8 +46,8 @@ app.get("/scrape", function (req, res) {
     var $ = cheerio.load(response.data);
 
     $(".c-entry-box--compact__title").each(function (i, element) {
-      object.title = $(this).text();
-      object.link = $(this).children("a").text();
+      object.title = $(this).text().trim();
+      object.link = $(this).children("a").text().trim();
 
       db.Article.create(object)
         .then(function (dbArticle) {
@@ -57,13 +57,21 @@ app.get("/scrape", function (req, res) {
         });
     })
     res.send("scrape complete")
-  })
+  });
 });
 
 app.put("/save/:id", function(req, res){
   db.Article.update({ _id: req.params.id}, { saved: true }, { new: true })
   .then(function(update){
     res.send(update)
+  });
+});
+
+app.get("/saved", function(req, res){
+  db.Article.find({saved: true})
+  .then(function(dbArticle){
+    console.log(dbArticle)
+    res.render("saved", {dbArticle: dbArticle})
   })
 })
 
