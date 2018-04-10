@@ -22,24 +22,23 @@ $(document).on("click", ".save", function(){
   });
 });
 
-
 $(document).on("click", ".note", function(){
   articleId = $(this).attr("id");
   $.get("/getNotes/" + articleId).then(function(response){
     if (response.length >= 1){
       $("#modalNote").text(response);
       $("#modalSubmit").text("Update Note");
+    } else {
+      $("#modalNote").text("");
     }
   });
 });
-
 
 $("#modalSubmit").on("click", function(){
   let object = {
     body: $("#inputNote").val().trim()
   }
   $.post("/submitNote/" + articleId, object).then(function(response){
-    $("#modalNote").text(response);
     $("#inputNote").val("");
   });
 });

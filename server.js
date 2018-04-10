@@ -3,7 +3,6 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var cheerio = require("cheerio");
 var mongoose = require("mongoose");
-var request = require("request");
 var exphbs = require("express-handlebars");
 var axios = require("axios");
 
