@@ -15,7 +15,7 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 
-var PORT = 3000;
+var PORT = process.env.PORT || 3000
 
 var databaseUri = "mongodb://localhost/mongoHeadlines";
 
