@@ -28,7 +28,7 @@
     <div class="card">
       <div class="card-header" id="headingOne">
         <h5 class="mb-0">
-          <button class="btn btn-link" data-toggle="collapse" data-target="#{{this._id}}" aria-expanded="true" aria-controls="collapseOne">
+          <button data-id="{{this.link}}" class="btn btn-link getSummary" data-toggle="collapse" data-target="#{{this._id}}" aria-expanded="true" aria-controls="collapseOne">
             {{this.title}}
           </button>
         </h5>
@@ -39,6 +39,7 @@
       <div id="{{this._id}}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
         <div class="card-body">
           <a href="{{this.link}}">View the article here</a>
+          <div class="summaryArea"></div>
         </div>
       </div>
     </div>
