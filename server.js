@@ -24,7 +24,15 @@ mongoose.connect(MONGODB_URI, {
   // useMongoClient: true
 });
 
-var db = require("./models");
+var db = mongoose.connection;
+
+db.on('error', function(err){
+  console.log("Mongoose Error: ", err);
+});
+
+db.once("open", function(){
+  console.log("mongoose connection successful");
+})
 
 require("./routes/all.js")(app, db, express);
 
