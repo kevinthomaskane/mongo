@@ -54,6 +54,16 @@ $(document).on("click", "#noteDelete", function(){
   });
 });
 
+$(document).on("click", ".remove", function(){
+  let id = $(this).attr("data-id");
+  $.ajax({
+    method: "PUT",
+    url: "/removeSaved/" + id
+  }).then(function(response){
+    location.reload();
+  });
+});
+
 $('.collapse').collapse();
 
 

@@ -19,12 +19,13 @@ module.exports = function(app, db, express){
   app.get("/scrape", function (req, res) {
     var object = {};
     axios.get("https://www.sbnation.com/nba").then(function (response) {
+      console.log(response)
   
       var $ = cheerio.load(response.data);
   
       $(".c-entry-box--compact__title").each(function (i, element) {
         object.title = $(this).text().trim();
-        object.link = $(this).children("a").text().trim();
+        object.link = $(this).children("a").attr("href").trim();
   
         db.Article.create(object)
           .then(function (dbArticle) {
@@ -77,6 +78,14 @@ module.exports = function(app, db, express){
   
   app.put("/deleteNote/:id", function(req, res){
     db.Article.findOneAndUpdate({_id: req.params.id}, {note: undefined})
+    .then(function(response){
+      console.log(response)
+      res.json(response);
+    });
+  });
+
+  app.put("/removeSaved/:id", function(req, res){
+    db.Article.findOneAndUpdate({_id: req.params.id}, {saved: false})
     .then(function(response){
       console.log(response)
       res.json(response);
