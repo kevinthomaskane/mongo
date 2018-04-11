@@ -14,13 +14,31 @@ $("#scrape").on("click", function(){
   });
 });
 
+$(document).on("click", ".getSummary", function(){
+  $(".summaryArea").empty();
+  console.log("requesting sumary")
+  let link = $(this).attr("data-id");
+  console.log(link)
+  $.post("/summary", {link: link}).then(function(response){
+    var array = response.articleText.split(" ")
+    for (let i = 0; i < 40; i++){
+      $(".summaryArea").append(`
+      ${array[i]}
+      `)
+      if (i === 39){
+        $(".summaryArea").append(".....")
+      }
+    }
+  })
+})
+
+
 $(document).on("click", ".save", function(){
   let id = $(this).attr("data-id");
   $.ajax({
     method: "PUT",
     url: "/save/" + id
   }).then(function(data){
-    console.log(data);
   });
 });
 
