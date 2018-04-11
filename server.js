@@ -17,20 +17,22 @@ app.set("view engine", "handlebars");
 
 var PORT = 3000;
 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+var databaseUri = "mongodb://localhost/mongoHeadlines";
 
-mongoose.Promise = Promise;
-mongoose.connect(MONGODB_URI, {
-  // useMongoClient: true
-});
+if (process.env.MONGODB_URI){
+  mongoose.connect(process.env.MONGODB_URI)
+} else {
+  mongoose.connect(databaseUri)
+}
 
-var db = mongoose.connection;
+var database = mongoose.connection;
+var db = require("./models");
 
-db.on('error', function(err){
+database.on('error', function(err){
   console.log("Mongoose Error: ", err);
 });
 
-db.once("open", function(){
+database.once("open", function(){
   console.log("mongoose connection successful");
 })
 
