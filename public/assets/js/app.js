@@ -1,6 +1,8 @@
 
 var articleId;
 
+
+
 if ($("#modalNote").text().length >= 1){
   console.log("in note if")
   $("#modalSubmit").text("Update Note");
@@ -13,7 +15,7 @@ $("#scrape").on("click", function(){
 });
 
 $(document).on("click", ".save", function(){
-  let id = $(this).attr("id");
+  let id = $(this).attr("data-id");
   $.ajax({
     method: "PUT",
     url: "/save/" + id
@@ -51,5 +53,7 @@ $(document).on("click", "#noteDelete", function(){
     $("#modalNote").text("");
   });
 });
+
+$('.collapse').collapse();
 
 
