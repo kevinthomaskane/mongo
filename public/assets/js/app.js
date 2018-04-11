@@ -32,7 +32,6 @@ $(document).on("click", ".getSummary", function(){
   })
 })
 
-
 $(document).on("click", ".save", function(){
   let id = $(this).attr("data-id");
   $.ajax({
@@ -44,9 +43,10 @@ $(document).on("click", ".save", function(){
 
 $(document).on("click", ".note", function(){
   articleId = $(this).attr("data-id");
-  $.get("/getNotes/" + articleId).then(function(response){
+  $.get("/getNotes/" + articleId).then((response) =>{
     if (response.length >= 1){
       $("#modalNote").text(response);
+      $(this).text("View Note");
       $("#modalSubmit").text("Update Note");
     } else {
       $("#modalNote").text("");
