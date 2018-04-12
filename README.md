@@ -1,4 +1,4 @@
-# mongo
+# NBA All-Access
 
 <p>This is a full-stack application created with ExpressJS, NodeJS, HandlebarsJS, Cheerio, Javascript, JQuery, and Bootstrap.</p>
 
