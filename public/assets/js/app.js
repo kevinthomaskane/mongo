@@ -94,6 +94,8 @@ $(document).on("click", "#noteDelete", function(){
     url: "/deleteNote/" + articleId
   }).then(function(response){
     $("#modalNote").text("");
+    $(`[data-id="${articleId}"]`).text("Add a Note");
+    localStorage.removeItem(articleId, articleId);
   });
 });
 
