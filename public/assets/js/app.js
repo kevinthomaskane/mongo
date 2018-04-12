@@ -1,11 +1,33 @@
 
 var articleId;
+var localStorageArray = [];
+var buttonsArray = [];
 
+$(document).ready(function(){
+  for (var key in localStorage){
+    if (key !== "length" && key !== "key" && key !== "getItem" &&
+     key !== "setItem" && key !== "removeItem" && key !== "clear"){
+      localStorageArray.push(key);
+     }
+  }
+  getButtonIds();
+  printButtons(localStorageArray, buttonsArray);
+})
 
+function getButtonIds(){
+  $('.note').each(function() {
+    buttonsArray.push($(this).attr("data-id"));
+});
+}
 
-if ($("#modalNote").text().length >= 1){
-  console.log("in note if")
-  $("#modalSubmit").text("Update Note");
+function printButtons(array1, array2){
+  for (let i = 0; i < array1.length; i++){
+    for (let j = 0; j < array2.length; j++){
+      if (array1[i] === array2[j]){
+        $(`[data-id="${array1[i]}"]`).text("View Note");
+      }
+    }
+  }
 }
 
 $("#scrape").on("click", function(){
@@ -34,6 +56,7 @@ $(document).on("click", ".getSummary", function(){
 
 $(document).on("click", ".save", function(){
   let id = $(this).attr("data-id");
+  buttonsArray.push(id);
   $.ajax({
     method: "PUT",
     url: "/save/" + id
@@ -46,7 +69,6 @@ $(document).on("click", ".note", function(){
   $.get("/getNotes/" + articleId).then((response) =>{
     if (response.length >= 1){
       $("#modalNote").text(response);
-      $(this).text("View Note");
       $("#modalSubmit").text("Update Note");
     } else {
       $("#modalNote").text("");
@@ -60,6 +82,9 @@ $("#modalSubmit").on("click", function(){
   }
   $.post("/submitNote/" + articleId, object).then(function(response){
     $("#inputNote").val("");
+    $(`[data-id="${articleId}"]`).text("View Note");
+    localStorage.setItem(articleId, articleId)
+    console.log('hello')
   });
 });
 
@@ -73,7 +98,7 @@ $(document).on("click", "#noteDelete", function(){
 });
 
 $(document).on("click", ".remove", function(){
-  let id = $(this).attr("data-id");
+  let id = $(this).attr("data-item");
   $.ajax({
     method: "PUT",
     url: "/removeSaved/" + id
